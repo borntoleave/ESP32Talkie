@@ -13,5 +13,7 @@ function [pitch,score] = pitchRefine(w,pitchGuess,pitchRange,sampleRate)
         if (pitchScore > score)
             score = pitchScore;
             pitch = newGuess;
+%         else
+%             pitch = pitchGuess;
         end
     end

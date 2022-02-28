@@ -14,7 +14,14 @@ repeatFrames = 0;
 unvoicedFrames = 0;
 voicedFrames = 0;
 
-numFrames = size(frames)(1);
+sizeF = size(frames);
+numFrames = sizeF(1);
+
+global bitStack; 
+bitStack = "";
+global fid;
+fid = fopen('data.h','w');
+    fprintf(fid,"const uint8_t soundData[] PROGMEM = {");
 
 for f = 1:numFrames;
     frame = frames(f,:);
@@ -63,10 +70,11 @@ end
 
 % Emit a stop frame
 bitEmit(15,4);
+fprintf(fid,"};");
 
-printf('Frames:\n%d V, %d U, %d R, %d S\n',voicedFrames,unvoicedFrames,repeatFrames,silentFrames);
+fprintf('Frames:\n%d V, %d U, %d R, %d S\n',voicedFrames,unvoicedFrames,repeatFrames,silentFrames);
 romSize = 50*voicedFrames + 29*unvoicedFrames + 11*repeatFrames + 4*silentFrames;
-printf('Rom size %d bits\n',romSize);
+fprintf('Rom size %d bits\n',romSize);
 
 % Output from this needs to be grouped into groups of 8 bits.
 % LSB of byte is the first bit to be decoded.
